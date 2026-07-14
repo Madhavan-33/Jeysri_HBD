@@ -611,7 +611,7 @@ def birthday_fun():
                         </div>
                         
                         <div id="wallpaper-wrapper" class="final-pic-container">
-                            <img id="final-wallpaper-img" src="{{ url_for('static', filename='Jeysri_Wallpaper_Lap.jpg') }}" alt="Birthday Wallpaper" onerror="handleImageError(this)">
+                            <img id="final-wallpaper-img" src="{{ url_for('static', filename='Jeysri_Wallpaper_lap.jpg') }}" alt="Birthday Wallpaper" onerror="handleImageError(this)">
                             <div class="img-placeholder" style="display:none;">[ Final Wallpaper AI Pic Placeholder ]</div>
                         </div>
 
@@ -620,7 +620,7 @@ def birthday_fun():
                             <h3 class="video-title">🎥 Una Paraka Vechirken Paaru!</h3>
                             <div class="video-container">
                                 <video id="birthday-video" controls>
-                                    <source src="{{ url_for('static', filename='jeysri_AI_Video.mp4') }}" type="video/mp4">
+                                    <source src="{{ url_for('static', filename='Jeysri_AI_Video.mp4') }}" type="video/mp4">
                                     Your browser does not support the video tag.
                                 </video>
                             </div>
@@ -710,7 +710,7 @@ def birthday_fun():
             }
 
             // JavaScript dynamic source URLs also need correct Flask rendering
-            const wallpaperLapUrl = "{{ url_for('static', filename='Jeysri_Wallpaper_Lap.jpg') }}";
+            const wallpaperLapUrl = "{{ url_for('static', filename='Jeysri_Wallpaper_lap.jpg') }}";
             const wallpaperMobileUrl = "{{ url_for('static', filename='Jeysri_Wallpaper.jpg') }}";
 
             function showOption(optionId) {
@@ -770,8 +770,7 @@ def birthday_fun():
     </html>
     """
     # prechana solution: render_template_string kulla context function ah pass pannanum!
-    return render_template_string(html_content, url_for=url_for)
-
+return render_template_string(html_content, url_for=url_for)
 
 if __name__ == "__main__":
     app.run(debug=True)
