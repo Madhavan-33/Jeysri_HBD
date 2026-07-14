@@ -1,11 +1,13 @@
 import os
-from flask import Flask, render_template_string
+from flask import Flask, render_template_string, url_for  # Added url_for here
 
 app = Flask(__name__)
 
 
 @app.route("/")
 def birthday_fun():
+    # Enna prechana na, template string ulla Flask context variables direct ah pass pannanum
+    # Adhuku Jinja syntax (double curly braces) use panni 'url_for' call pannanum.
     html_content = """
     <!DOCTYPE html>
     <html lang="en">
@@ -339,7 +341,6 @@ def birthday_fun():
                 box-shadow: 0 5px 15px rgba(165, 94, 234, 0.3);
             }
 
-            /* Secondary unique style for device buttons */
             .dev-btn {
                 color: var(--primary-blue);
                 border: 2px solid var(--primary-blue);
@@ -443,7 +444,6 @@ def birthday_fun():
                 transition: max-width 0.4s ease-in-out;
             }
             
-            /* Visual adjustment helper class for phone frames */
             .final-pic-container.phone-frame {
                 max-width: 280px;
             }
@@ -461,7 +461,6 @@ def birthday_fun():
                 margin-bottom: 30px;
             }
 
-            /* --- NEW VIDEO SECTION STYLING --- */
             .video-section {
                 width: 100%;
                 max-width: 600px;
@@ -480,29 +479,20 @@ def birthday_fun():
             }
 
             .video-container {
-    width: 100%;
-    /* 1. Limits the horizontal width to a typical phone size */
-    max-width: 360px; 
-    
-    /* 2. Forces a vertical, smartphone aspect ratio */
-    aspect-ratio: 9 / 16; 
-    
-    /* 3. Centers the video container horizontally on a laptop screen */
-    margin: 0 auto; 
-    
-    /* 4. Rounded corners give it a modern app/phone feel */
-    border-radius: 16px; 
-    overflow: hidden; 
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-}
+                width: 100%;
+                max-width: 360px; 
+                aspect-ratio: 9 / 16; 
+                margin: 0 auto; 
+                border-radius: 16px; 
+                overflow: hidden; 
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            }
 
-/* Make sure the actual video tag fills this new phone shape properly */
-.video-container video {
-    width: 100%;
-    height: 100%;
-    /* 'cover' crops the video slightly to fill the vertical frame without stretching */
-    object-fit: cover; 
-}
+            .video-container video {
+                width: 100%;
+                height: 100%;
+                object-fit: cover; 
+            }
 
             @keyframes bounce {
                 0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
@@ -542,7 +532,7 @@ def birthday_fun():
                 </svg>
 
                 <div class="profile-pic-container">
-                    <img src="/static/jeysri_hbd.jpeg" alt="Birthday Profile Pic" onerror="handleImageError(this)">
+                    <img src="{{ url_for('static', filename='jeysri_hbd.jpeg') }}" alt="Birthday Profile Pic" onerror="handleImageError(this)">
                 </div>
                 
                 <div class="scroll-down">
@@ -591,15 +581,15 @@ def birthday_fun():
                     
                     <div class="display-area">
                         <div id="display-supergirl" class="image-display-wrapper option-display">
-                            <img src="/static/Jeysri_SuperGirl.jpeg" alt="SuperGirl Variant" onerror="handleImageError(this)">
+                            <img src="{{ url_for('static', filename='Jeysri_SuperGirl.jpeg') }}" alt="SuperGirl Variant" onerror="handleImageError(this)">
                             <div class="img-placeholder" style="display:none;">[ SuperGirl AI Pic Placeholder ]</div>
                         </div>
                         <div id="display-angel" class="image-display-wrapper option-display">
-                            <img src="/static/Jeysri_Angel.jpeg" alt="Angel Variant" onerror="handleImageError(this)">
+                            <img src="{{ url_for('static', filename='Jeysri_Angel.jpeg') }}" alt="Angel Variant" onerror="handleImageError(this)">
                             <div class="img-placeholder" style="display:none;">[ Angel AI Pic Placeholder ]</div>
                         </div>
                         <div id="display-homelygirl" class="image-display-wrapper option-display">
-                            <img src="/static/Jeysri_HomelyGirl.jpeg" alt="HomelyGirl Variant" onerror="handleImageError(this)">
+                            <img src="{{ url_for('static', filename='Jeysri_HomelyGirl.jpeg') }}" alt="HomelyGirl Variant" onerror="handleImageError(this)">
                             <div class="img-placeholder" style="display:none;">[ HomelyGirl AI Pic Placeholder ]</div>
                         </div>
                     </div>
@@ -621,7 +611,7 @@ def birthday_fun():
                         </div>
                         
                         <div id="wallpaper-wrapper" class="final-pic-container">
-                            <img id="final-wallpaper-img" src="/static/Jeysri_Wallpaper_Lap.jpg" alt="Birthday Wallpaper" onerror="handleImageError(this)">
+                            <img id="final-wallpaper-img" src="{{ url_for('static', filename='Jeysri_Wallpaper_Lap.jpg') }}" alt="Birthday Wallpaper" onerror="handleImageError(this)">
                             <div class="img-placeholder" style="display:none;">[ Final Wallpaper AI Pic Placeholder ]</div>
                         </div>
 
@@ -630,7 +620,7 @@ def birthday_fun():
                             <h3 class="video-title">🎥 Una Paraka Vechirken Paaru!</h3>
                             <div class="video-container">
                                 <video id="birthday-video" controls>
-                                    <source src="/static/jeysri_AI_Video.mp4" type="video/mp4">
+                                    <source src="{{ url_for('static', filename='jeysri_AI_Video.mp4') }}" type="video/mp4">
                                     Your browser does not support the video tag.
                                 </video>
                             </div>
@@ -719,6 +709,10 @@ def birthday_fun():
                 }, 500);
             }
 
+            // JavaScript dynamic source URLs also need correct Flask rendering
+            const wallpaperLapUrl = "{{ url_for('static', filename='Jeysri_Wallpaper_Lap.jpg') }}";
+            const wallpaperMobileUrl = "{{ url_for('static', filename='Jeysri_Wallpaper.jpg') }}";
+
             function showOption(optionId) {
                 clickedOptions[optionId] = true;
                 
@@ -741,10 +735,10 @@ def birthday_fun():
                 document.getElementById('btn-' + device).classList.add('active');
 
                 if (device === 'laptop') {
-                    wallpaperImg.src = "/static/Jeysri_Wallpaper_lap.jpg";
+                    wallpaperImg.src = wallpaperLapUrl;
                     wrapper.classList.remove('phone-frame');
                 } else if (device === 'mobile') {
-                    wallpaperImg.src = "/static/Jeysri_Wallpaper.jpg";
+                    wallpaperImg.src = wallpaperMobileUrl;
                     wrapper.classList.add('phone-frame');
                 }
             }
@@ -775,7 +769,8 @@ def birthday_fun():
     </body>
     </html>
     """
-    return render_template_string(html_content)
+    # prechana solution: render_template_string kulla context function ah pass pannanum!
+    return render_template_string(html_content, url_for=url_for)
 
 
 if __name__ == "__main__":
