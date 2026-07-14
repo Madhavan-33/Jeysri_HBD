@@ -710,9 +710,8 @@ def birthday_fun():
             }
 
             // JavaScript dynamic source URLs also need correct Flask rendering
-            const wallpaperLapUrl = "{{ url_for('static', filename='Jeysri_Wallpaper_lap.jpg') }}";
-            const wallpaperMobileUrl = "{{ url_for('static', filename='Jeysri_Wallpaper.jpg') }}";
-
+const wallpaperLapUrl = {{ url_for('static', filename='Jeysri_Wallpaper_lap.jpg') | tojson }};
+const wallpaperMobileUrl = {{ url_for('static', filename='Jeysri_Wallpaper.jpg') | tojson }};
             function showOption(optionId) {
                 clickedOptions[optionId] = true;
                 
@@ -770,7 +769,6 @@ def birthday_fun():
     </html>
     """
     # prechana solution: render_template_string kulla context function ah pass pannanum!
-return render_template_string(html_content, url_for=url_for)
-
+    return render_template_string(html_content)
 if __name__ == "__main__":
     app.run(debug=True)
